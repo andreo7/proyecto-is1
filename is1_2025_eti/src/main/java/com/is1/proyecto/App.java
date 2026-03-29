@@ -18,6 +18,8 @@ import java.util.Map; // Interfaz Map, utilizada para Map.of() o HashMap.
 
 // Importaciones de clases del proyecto
 import com.is1.proyecto.config.DBConfigSingleton; // Clase Singleton para la configuración de la base de datos.
+import com.is1.proyecto.models.Docente;
+import com.is1.proyecto.models.Persona;
 import com.is1.proyecto.models.User; // Modelo de ActiveJDBC que representa la tabla 'users'.
 
 
@@ -149,12 +151,12 @@ public class App {
             return new ModelAndView(model, "login.mustache");
         }, new MustacheTemplateEngine()); // Especifica el motor de plantillas para esta ruta.
 
+
         // GET: Ruta de alias para el formulario de creación de cuenta.
         // En una aplicación real, probablemente querrías unificar con '/user/create' para evitar duplicidad.
         get("/user/new", (req, res) -> {
             return new ModelAndView(new HashMap<>(), "user_form.mustache"); // No pasa un modelo específico, solo el formulario.
         }, new MustacheTemplateEngine()); // Especifica el motor de plantillas para esta ruta.
-
 
         // --- Rutas POST para manejar envíos de formularios y APIs ---
 
@@ -183,7 +185,7 @@ public class App {
 
                 res.status(201); // Código de estado HTTP 201 (Created) para una creación exitosa.
                 // Redirige al formulario de creación con un mensaje de éxito.
-                res.redirect("/user/create?message=Cuenta creada exitosamente para " + name + "!");
+                res.redirect("/user/create?message=Alta realizada exitosamente para " + name + "!");
                 return ""; // Retorna una cadena vacía.
 
             } catch (Exception e) {
@@ -293,5 +295,99 @@ public class App {
             }
         });
 
+        get("/teacher/new", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            // Leer mensajes enviados por redirect
+            String success = req.queryParams("success");
+            String error = req.queryParams("error");
+            if (success != null) model.put("successMessage", success);
+            if (error != null) model.put("errorMessage", error);
+            return new ModelAndView(model, "docente_form.mustache");
+        }, new MustacheTemplateEngine());
+        
+        post("/teacher/new", (req, res) -> {
+            String name = req.queryParams("nombre");
+            String apellido = req.queryParams("apellido");
+            int dni;
+            try {
+                dni = Integer.parseInt(req.queryParams("dni"));
+                } catch (NumberFormatException e) {
+                res.status(400);
+                return "DNI inválido: debe ser un número";
+            }
+            String contacto = req.queryParams("contacto");
+            String direccion = req.queryParams("direccion");
+            String matricula = req.queryParams("matricula");
+
+            // Validaciones básicas: campos no pueden ser nulos o vacíos.
+            if (name == null || name.isEmpty() || apellido == null || apellido.isEmpty() 
+            || dni <= 0 || contacto == null || contacto.isEmpty() || direccion == null 
+            || direccion.isEmpty() || matricula == null || matricula.isEmpty()) {
+                res.status(400); // Código de estado HTTP 400 (Bad Request).
+                // Redirige al formulario de creación con un mensaje de error.
+                res.redirect("/teacher/new?error=Todos los campos son requeridos.");
+                return ""; // Retorna una cadena vacía ya que la respuesta ya fue redirigida.
+            }
+
+            try {
+                // Intenta crear y guardar la nueva cuenta en la base de datos.
+                Persona ac = new Persona(); // Crea una nueva instancia del modelo User.
+                ac.set("nombre", name); // Asigna el nombre de usuario.
+                ac.set("apellido", apellido);
+                ac.set("dni", dni);
+                ac.set("contacto", contacto);
+                ac.set("direccion", direccion);
+                
+                String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}$";
+                if(contacto == null || !contacto.matches(regex)){
+                    res.status(400); // Código de estado HTTP 201 (Created) para una creación exitosa.
+                    // Redirige al formulario de creación con un mensaje de éxito.
+                    res.redirect("/teacher/new?error=Contacto incorrecto");
+                    return "";
+                } 
+                Persona p1 = Persona.findFirst("dni = ?", String.valueOf(dni));
+                Persona p2 = Persona.findFirst("contacto = ?", contacto);
+                // Si DNI repetido
+                if (p1 != null) {
+                    res.redirect("/teacher/new?error=El DNI " + dni + " ya esta registrado");
+                    return "";
+                }
+
+                // Si contacto repetido
+                if (p2 != null) {
+                    res.redirect("/teacher/new?error=El contacto " + contacto + " ya esta registrado");
+                    return "";
+                }
+
+                //Si matricula ya existe
+                Docente d1 = Docente.findFirst("matricula = ?", matricula);
+                if (d1 != null) {
+                    res.redirect("/teacher/new?error=La matricula " + matricula + " ya esta registrada");
+                    return "";
+                }
+
+                ac.saveIt();
+                Docente dc = new Docente();
+                dc.set("matricula", matricula);
+                dc.setPerson(ac);
+                dc.saveIt();
+
+                res.status(201); // Código de estado HTTP 201 (Created) para una creación exitosa.
+                // Redirige al formulario de creación con un mensaje de éxito.
+                res.redirect("/teacher/new?success=Alta de docente realizada exitosamente para " + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "!");
+                return ""; // Retorna una cadena vacía.
+
+            } catch (Exception e) {
+                // Si ocurre cualquier error durante la operación de DB (ej. nombre de usuario duplicado),
+                // se captura aquí y se redirige con un mensaje de error.
+                System.err.println("Error al dar de alta docente: " + e.getMessage());
+                e.printStackTrace(); // Imprime el stack trace para depuración.
+                res.status(500); // Código de estado HTTP 500 (Internal Server Error).
+                res.redirect("/teacher/new?error=Error interno al dar alta docente. Intente de nuevo.");
+                return ""; // Retorna una cadena vacía.
+            }
+        });
+
     } // Fin del método main
 } // Fin de la clase App
+  
