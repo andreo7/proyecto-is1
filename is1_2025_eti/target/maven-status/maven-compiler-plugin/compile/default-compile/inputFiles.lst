@@ -1,5 +1,14 @@
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DashboardController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ServiceException.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ValidationException.java
 D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\User.java
 D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\App.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DocenteController.java
 D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\config\DBConfigSingleton.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\UserService.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\UserController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\DocenteService.java
 D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Docente.java
 D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Persona.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\DocenteValidator.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\UserValidator.java
