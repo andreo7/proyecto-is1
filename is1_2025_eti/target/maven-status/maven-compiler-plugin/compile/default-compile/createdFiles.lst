@@ -1,5 +1,14 @@
 com\is1\proyecto\models\Persona.class
-com\is1\proyecto\models\User.class
 com\is1\proyecto\App.class
+com\is1\proyecto\exceptions\ServiceException.class
+com\is1\proyecto\service\UserService.class
+com\is1\proyecto\service\DocenteService.class
+com\is1\proyecto\controller\UserController.class
+com\is1\proyecto\models\User.class
 com\is1\proyecto\config\DBConfigSingleton.class
+com\is1\proyecto\exceptions\ValidationException.class
+com\is1\proyecto\validators\DocenteValidator.class
+com\is1\proyecto\controller\DocenteController.class
 com\is1\proyecto\models\Docente.class
+com\is1\proyecto\controller\DashboardController.class
+com\is1\proyecto\validators\UserValidator.class
