@@ -35,7 +35,8 @@ public class DocenteController {
 
     /** Registra todas las rutas de este controller en Spark. */
     public static void registerRoutes() {
-        get("/teacher/new",  DocenteController::showForm, engine);
+        get("/teacher",      DocenteController::showList,   engine);
+        get("/teacher/new",  DocenteController::showForm,   engine);
         post("/teacher/new", DocenteController::handleCreate);
     }
 
@@ -43,12 +44,19 @@ public class DocenteController {
     // Handlers GET
     // -------------------------------------------------------------------------
 
+    /** Lista todos los docentes registrados. */
+    private static ModelAndView showList(Request req, Response res) {
+        Map<String, Object> model = new HashMap<>();
+        addQueryMessages(req, model);
+
+        model.put("docentes", docenteService.getAllDocentes());
+
+        return new ModelAndView(model, "docentes_list.mustache");
+    }
+
     private static ModelAndView showForm(Request req, Response res) {
         Map<String, Object> model = new HashMap<>();
-        String success = req.queryParams("success");
-        String error   = req.queryParams("error");
-        if (success != null && !success.isEmpty()) model.put("successMessage", success);
-        if (error   != null && !error.isEmpty())   model.put("errorMessage",   error);
+        addQueryMessages(req, model);
         return new ModelAndView(model, "docente_form.mustache");
     }
 
@@ -57,19 +65,19 @@ public class DocenteController {
     // -------------------------------------------------------------------------
 
     private static Object handleCreate(Request req, Response res) {
-        String nombre     = req.queryParams("nombre");
-        String apellido   = req.queryParams("apellido");
-        String dni        = req.queryParams("dni");
-        String contacto   = req.queryParams("contacto");
-        String direccion  = req.queryParams("direccion");
-        String matricula  = req.queryParams("matricula");
+        String nombre    = req.queryParams("nombre");
+        String apellido  = req.queryParams("apellido");
+        String dni       = req.queryParams("dni");
+        String contacto  = req.queryParams("contacto");
+        String direccion = req.queryParams("direccion");
+        String matricula = req.queryParams("matricula");
 
         try {
             DocenteValidator.validate(nombre, apellido, dni, contacto, direccion, matricula);
             docenteService.createDocente(nombre, apellido, dni, contacto, direccion, matricula);
 
             String nombreCapitalizado = capitalize(nombre);
-            res.redirect("/teacher/new?success=Alta realizada exitosamente para " + nombreCapitalizado + "!");
+            res.redirect("/teacher?success=Alta realizada exitosamente para " + nombreCapitalizado + "!");
 
         } catch (ValidationException | ServiceException e) {
             res.redirect("/teacher/new?error=" + e.getMessage());
@@ -87,5 +95,12 @@ public class DocenteController {
     private static String capitalize(String s) {
         if (s == null || s.isEmpty()) return s;
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
+    private static void addQueryMessages(Request req, Map<String, Object> model) {
+        String success = req.queryParams("success");
+        String error   = req.queryParams("error");
+        if (success != null && !success.isEmpty()) model.put("successMessage", success);
+        if (error   != null && !error.isEmpty())   model.put("errorMessage",   error);
     }
 }
