@@ -13,7 +13,7 @@ import static spark.Spark.*;
  *
  * Responsabilidades (y SOLO estas):
  *   1. Iniciar Spark en el puerto configurado.
- *   2. Registrar los filtros before/after para la conexión a la base de datos.
+ *   2. Registrar los filtros before/afterAfter para la conexión a la base de datos.
  *   3. Delegar el registro de rutas a cada Controller.
  *
  * Regla: cada vez que se agrega una nueva entidad al sistema, se agrega
@@ -27,19 +27,30 @@ public class App {
 
         DBConfigSingleton dbConfig = DBConfigSingleton.getInstance();
 
-        // --- Filtros de conexión a la base de datos (se ejecutan en cada request) ---
+        // --- Filtros de conexión a la base de datos ---
+
+        // Se ejecuta antes de cada request.
+        // Guard: evita abrir una conexión si ya hay una activa en el thread
+        // (puede quedar abierta si un halt() previo cortó el afterAfter).
         before((req, res) -> {
-            try {
-                Base.open(dbConfig.getDriver(), dbConfig.getDbUrl(), dbConfig.getUser(), dbConfig.getPass());
-            } catch (Exception e) {
-                System.err.println("Error al abrir conexión con la BD: " + e.getMessage());
-                halt(500, "{\"error\": \"Error interno del servidor: fallo al conectar a la base de datos.\"}");
+            if (!Base.hasConnection()) {
+                try {
+                    Base.open(dbConfig.getDriver(), dbConfig.getDbUrl(), dbConfig.getUser(), dbConfig.getPass());
+                } catch (Exception e) {
+                    System.err.println("Error al abrir conexión con la BD: " + e.getMessage());
+                    halt(500, "{\"error\": \"Error interno del servidor: fallo al conectar a la base de datos.\"}");
+                }
             }
         });
 
-        after((req, res) -> {
+        // afterAfter se ejecuta SIEMPRE al finalizar el request,
+        // incluso cuando halt() fue llamado en before o en una ruta.
+        // Esto garantiza que Base.close() siempre se ejecute.
+        afterAfter((req, res) -> {
             try {
-                Base.close();
+                if (Base.hasConnection()) {
+                    Base.close();
+                }
             } catch (Exception e) {
                 System.err.println("Error al cerrar conexión con la BD: " + e.getMessage());
             }
