@@ -23,3 +23,13 @@ CREATE TABLE docente(
     matricula INTEGER NOT NULL UNIQUE,
     CONSTRAINT fk_docente1 FOREIGN KEY (id_person) REFERENCES persona(id)
 );
+
+DROP TABLE IF EXISTS estudiante;
+CREATE TABLE estudiante(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_person INTEGER NOT NULL UNIQUE,
+    nro_alumno INTEGER NOT NULL UNIQUE,
+    estado_carrera VARCHAR NOT NULL,
+    CONSTRAINT fk_estudiante FOREIGN KEY (id_person) REFERENCES persona(id),
+    CHECK (estado_carrera IN ('Ingresante', 'Avanzado'))
+);
