@@ -2,21 +2,45 @@
 flowchart TD
     CW(["Cliente Web - Browser"])
 
-    subgraph Backend ["Backend — Java 11"]
-        SJ["Spark Java - Servidor HTTP + Rutas"]
+    subgraph Backend ["Backend — Java 21"]
+
+        SJ["Spark Java - Rutas y Filtros"]
+        BC["BCrypt - Hash y verificación"]
+
+        subgraph Controllers ["Capa Controller"]
+            C["Controllers"]
+        end
+
+        subgraph Validators ["Capa Validator"]
+            V["Validators"]
+        end
+
+        subgraph Services ["Capa Service"]
+            S["Services"]
+        end
+
+        subgraph Models ["Capa Model - ActiveJDBC ORM"]
+            M["Models"]
+        end
+
         MV["Motor de Vistas - Mustache"]
-        ORM["ActiveJDBC - ORM"]
-        BC["BCrypt - Hash y verificación de contraseñas"]
+        CFG["DBConfigSingleton"]
     end
 
     DB[("Base de Datos - SQLite")]
 
     CW -- "HTTP Request GET/POST" --> SJ
-    SJ -- "Registro: hashea contraseña" --> BC
-    SJ -- "Login: verifica contraseña" --> BC
-    BC -- "Hash almacenable / Resultado true o false" --> SJ
-    SJ -- "Datos del modelo" --> MV
+    SJ --> C
+    C --> V
+    V -- "ValidationException" --> C
+    C --> S
+    S -- "hashea / verifica" --> BC
+    BC --> S
+    S -- "ServiceException" --> C
+    S --> M
+    M --> MV
     MV -- "HTML Response" --> CW
-    SJ <-- "Consultas / Resultados" --> ORM
-    ORM <-- "SQL" --> DB
+    SJ -- "openConnection / closeConnection" --> CFG
+    CFG --> DB
+    M <-- "SQL via ActiveJDBC" --> DB
 ```
