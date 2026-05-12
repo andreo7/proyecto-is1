@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73eb08f8-e2c5-417e-a9fc-7a08ba17bd43" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/is1_2025_eti/src/main/resources/templates/docente_form.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/is1_2025_eti/src/main/resources/templates/docente_form.mustache" afterDir="false" />
-    </list>
+    <list default="true" id="73eb08f8-e2c5-417e-a9fc-7a08ba17bd43" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
