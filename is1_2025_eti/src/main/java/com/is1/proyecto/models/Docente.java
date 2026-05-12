@@ -1,41 +1,44 @@
 package com.is1.proyecto.models;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
 
 @Table("docente")
-public class Docente extends Model{
-    public Persona getPerson(){
+@BelongsTo(parent = Persona.class, foreignKeyName = "id_person")
+public class Docente extends Model {
+
+    public Persona getPerson() {
         return parent(Persona.class);
     }
 
-    public void setPerson(Persona persona){
+    public void setPerson(Persona persona) {
         set("id_person", persona.getId());
     }
 
-    public void setMatricula(int matricula){
-        set("matricula",matricula);
+    public void setMatricula(int matricula) {
+        set("matricula", matricula);
     }
 
-    public int getMatricula(){
+    public int getMatricula() {
         return getInteger("matricula");
     }
 
-    //Metodos Puentes//
+    // Métodos puente //
 
-    public String getNombre(){
+    public String getNombre() {
         return getPerson().getNombre();
     }
 
-    public String getApellido(){
+    public String getApellido() {
         return getPerson().getApellido();
     }
 
-    public String getDireccion(){
+    public String getDireccion() {
         return getPerson().getDireccion();
     }
 
-    public String getContacto(){
+    public String getContacto() {
         return getPerson().getContacto();
     }
 }
