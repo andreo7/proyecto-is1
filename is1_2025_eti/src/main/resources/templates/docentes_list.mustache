@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Docentes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Encabezado -->
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Listado de Docentes</h1>
+            <a href="/teacher/new"
+               class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 text-sm font-medium">
+                + Nuevo Docente
+            </a>
+        </div>
+
+        <!-- Mensajes de éxito / error -->
+        {{#successMessage}}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            <span class="block sm:inline">{{successMessage}}</span>
+        </div>
+        {{/successMessage}}
+
+        {{#errorMessage}}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <span class="block sm:inline">{{errorMessage}}</span>
+        </div>
+        {{/errorMessage}}
+
+        <!-- Tabla -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Apellido</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DNI</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Matrícula</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contacto</th>
+                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {{#docentes}}
+                    <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{nombre}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{apellido}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{dni}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{matricula}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{contacto}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <a href="/teacher/{{id}}"
+                                   class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-1 rounded text-xs font-medium transition duration-150">
+                                    Ver
+                                </a>
+                                <a href="/teacher/{{id}}/edit"
+                                   class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-1 rounded text-xs font-medium transition duration-150">
+                                    Editar
+                                </a>
+                                <form action="/teacher/{{id}}/delete" method="post" class="inline"
+                                      onsubmit="return confirm('¿Estás seguro de que deseas eliminar a {{nombre}} {{apellido}}?')">
+                                    <button type="submit"
+                                            class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1 rounded text-xs font-medium transition duration-150">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/docentes}}
+
+                    <!-- Estado vacío -->
+                    {{^docentes}}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-400 text-sm">
+                            No hay docentes registrados aún.
+                            <a href="/teacher/new" class="text-blue-600 hover:underline ml-1">Dar de alta el primero</a>.
+                        </td>
+                    </tr>
+                    {{/docentes}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pie de página -->
+        <div class="text-center mt-6">
+            <a href="/dashboard" class="text-blue-600 hover:underline text-sm">← Volver al panel</a>
+        </div>
+
+    </div>
+</body>
+</html>
