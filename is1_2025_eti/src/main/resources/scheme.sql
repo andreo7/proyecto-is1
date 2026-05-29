@@ -33,3 +33,11 @@ CREATE TABLE estudiante(
     CONSTRAINT fk_estudiante FOREIGN KEY (id_person) REFERENCES persona(id),
     CHECK (estado_carrera IN ('Ingresante', 'Avanzado'))
 );
+
+DROP TABLE IF EXISTS materia;
+CREATE TABLE materia (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    descripcion TEXT NOT NULL,
+    codigo INTEGER NOT NULL UNIQUE
+);
