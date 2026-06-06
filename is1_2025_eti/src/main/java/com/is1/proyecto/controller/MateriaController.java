@@ -2,6 +2,7 @@ package com.is1.proyecto.controller;
 
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
+import com.is1.proyecto.models.Materia;
 import com.is1.proyecto.service.MateriaService;
 import com.is1.proyecto.validators.MateriaValidator;
 import spark.ModelAndView;
@@ -12,7 +13,8 @@ import spark.template.mustache.MustacheTemplateEngine;
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class MateriaController {
 
@@ -111,7 +113,7 @@ public class MateriaController {
         return "";
     }
     private static Object handleUpdate(Request req, Response res) {
-        String idStr       = req.queryParams("id");
+        String idStr       = req.params(":id");
         String nombre      = req.queryParams("nombre");
         String descripcion = req.queryParams("descripcion");
         String codigoStr   = req.queryParams("codigo");
