@@ -3,6 +3,7 @@ package com.is1.proyecto;
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.controller.DashboardController;
 import com.is1.proyecto.controller.DocenteController;
+import com.is1.proyecto.controller.MateriaController;
 import com.is1.proyecto.controller.UserController;
 import org.javalite.activejdbc.Base;
 
