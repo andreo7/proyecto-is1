@@ -24,6 +24,8 @@ public class MateriaController {
     public static void registerRoutes() {
         get("/materia/new",  MateriaController::showForm,     engine);
         post("/materia/new", MateriaController::handleCreate);
+        get("/materia/list",     MateriaController::showList,     engine);
+        post("/materia/delete",  MateriaController::handleDelete);
     }
 
     // -------------------------------------------------------------------------
@@ -37,6 +39,11 @@ public class MateriaController {
         if (success != null) model.put("successMessage", success);
         if (error   != null) model.put("errorMessage",   error);
         return new ModelAndView(model, "materia_form.mustache");
+    }
+    private static ModelAndView showList(Request req, Response res) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("materias", materiaService.getAllMaterias());
+        return new ModelAndView(model, "materia_list.mustache");
     }
 
     // -------------------------------------------------------------------------
@@ -62,6 +69,23 @@ public class MateriaController {
             e.printStackTrace();
             res.status(500);
             res.redirect("/materia/new?error=Error interno. Intente de nuevo.");
+        }
+        return "";
+    }
+    private static Object handleDelete(Request req, Response res) {
+        String idStr = req.queryParams("id");
+
+        try {
+            materiaService.delete(Integer.parseInt(idStr.trim()));
+            res.redirect("/materia/list?success=Materia eliminada exitosamente.");
+        } catch (ServiceException e) {
+            res.status(400);
+            res.redirect("/materia/list?error=" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error al eliminar materia: " + e.getMessage());
+            e.printStackTrace();
+            res.status(500);
+            res.redirect("/materia/list?error=Error interno. Intente de nuevo.");
         }
         return "";
     }
