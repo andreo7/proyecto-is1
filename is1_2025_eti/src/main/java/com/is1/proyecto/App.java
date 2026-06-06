@@ -61,5 +61,6 @@ public class App {
         DocenteController.registerRoutes();
         DashboardController.registerRoutes();
         UserController.registerRoutes();
+        MateriaController.registerRoutes();
     }
 }
