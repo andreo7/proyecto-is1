@@ -45,4 +45,30 @@ public class MateriaService {
         }
         materia.delete();
     }
+
+    public Materia update(int id, String nombre, String descripcion, int codigo) {
+        Materia materia = Materia.findById(id);
+        if (materia == null) {
+            throw new ServiceException("La materia con id " + id + " no existe.");
+        }
+
+        Materia existing = Materia.findFirst("codigo = ?", codigo);
+        if (existing != null && !existing.getId().equals(materia.getId())) {
+            throw new ServiceException("El código " + codigo + " ya está registrado.");
+        }
+
+        materia.set("nombre",      nombre.trim());
+        materia.set("descripcion", descripcion.trim());
+        materia.set("codigo",      codigo);
+        materia.saveIt();
+
+        return materia;
+    }
+    public Materia findById(int id) {
+        Materia materia = Materia.findById(id);
+        if (materia == null) {
+            throw new ServiceException("La materia con id " + id + " no existe.");
+        }
+        return materia;
+    }
 }
