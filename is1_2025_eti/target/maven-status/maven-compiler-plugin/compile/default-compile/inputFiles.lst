@@ -1,19 +1,19 @@
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ValidationException.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\MateriaService.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Estudiante.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Docente.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Materia.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\App.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\DocenteService.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\DocenteValidator.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\MateriaValidator.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\UserValidator.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Persona.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\UserService.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DocenteController.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\config\DBConfigSingleton.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\UserController.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DashboardController.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ServiceException.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\MateriaController.java
-C:\Users\Lucas Marquez\IdeaProjects\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\User.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Materia.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DashboardController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\MateriaService.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ServiceException.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Estudiante.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\exceptions\ValidationException.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\User.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\App.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\DocenteController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\config\DBConfigSingleton.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\UserService.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\UserController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\service\DocenteService.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\controller\MateriaController.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Docente.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\MateriaValidator.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\models\Persona.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\DocenteValidator.java
+D:\Tercer año\Ingenieria de software 2\proyecto-is1\is1_2025_eti\src\main\java\com\is1\proyecto\validators\UserValidator.java

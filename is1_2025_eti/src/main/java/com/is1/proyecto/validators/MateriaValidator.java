@@ -14,22 +14,22 @@ public class MateriaValidator {
             throw new ValidationException("La descripción es requerida.");
         }
         if (isBlank(codigoStr)) {
-            throw new ValidationException("El código es requerido.");
+            throw new ValidationException("El codigo es requerido.");
         }
         if (nombre.trim().matches(".*[0-9].*")) {
             throw new ValidationException("El nombre no puede contener numeros.");
         }
         if (!codigoStr.trim().matches("^[0-9]+$")) {
-            throw new ValidationException("El código debe contener solo numeros.");
+            throw new ValidationException("El codigo debe contener solo numeros.");
         }
 
         try {
             int codigo = Integer.parseInt(codigoStr.trim());
             if (codigo <= 0) {
-                throw new ValidationException("El código debe ser un numero positivo.");
+                throw new ValidationException("El codigo debe ser un numero positivo.");
             }
         } catch (NumberFormatException e) {
-            throw new ValidationException("El código debe ser un número valido.");
+            throw new ValidationException("El codigo debe ser un número valido.");
         }
     }
 

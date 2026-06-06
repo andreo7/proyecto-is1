@@ -41,7 +41,7 @@ public class DocenteValidator {
             throw new ValidationException("El contacto es requerido.");
         }
         if (isBlank(direccion)) {
-            throw new ValidationException("La dirección es requerida.");
+            throw new ValidationException("La direccion es requerida.");
         }
         if (isBlank(matriculaStr)) {
             throw new ValidationException("La matrícula es requerida.");
@@ -50,23 +50,23 @@ public class DocenteValidator {
         try {
             int dni = Integer.parseInt(dniStr.trim());
             if (dni <= 0) {
-                throw new ValidationException("El DNI debe ser un número positivo.");
+                throw new ValidationException("El DNI debe ser un numero positivo.");
             }
         } catch (NumberFormatException e) {
-            throw new ValidationException("El DNI debe ser un número válido (sin letras ni símbolos).");
+            throw new ValidationException("El DNI debe ser un número valido (sin letras ni simbolos).");
         }
 
         try {
             int matricula = Integer.parseInt(matriculaStr.trim());
             if (matricula <= 0) {
-                throw new ValidationException("La matrícula debe ser un número positivo.");
+                throw new ValidationException("La matricula debe ser un número positivo.");
             }
         } catch (NumberFormatException e) {
-            throw new ValidationException("La matrícula debe ser un número válido.");
+            throw new ValidationException("La matricula debe ser un número valido.");
         }
 
         if (!contacto.trim().matches(EMAIL_REGEX)) {
-            throw new ValidationException("El contacto debe ser un email válido (ej: nombre@dominio.com).");
+            throw new ValidationException("El contacto debe ser un email valido (ej: nombre@dominio.com).");
         }
     }
 
