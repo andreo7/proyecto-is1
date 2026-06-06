@@ -24,10 +24,10 @@ public class UserValidator {
             throw new ValidationException("El nombre de usuario debe tener al menos 3 caracteres.");
         }
         if (isBlank(password)) {
-            throw new ValidationException("La contraseña es requerida.");
+            throw new ValidationException("La contrasena es requerida.");
         }
         if (password.length() < 6) {
-            throw new ValidationException("La contraseña debe tener al menos 6 caracteres.");
+            throw new ValidationException("La contrasena debe tener al menos 6 caracteres.");
         }
     }
 
@@ -41,7 +41,7 @@ public class UserValidator {
             throw new ValidationException("El nombre de usuario es requerido.");
         }
         if (isBlank(password)) {
-            throw new ValidationException("La contraseña es requerida.");
+            throw new ValidationException("La contrasena es requerida.");
         }
     }
 
