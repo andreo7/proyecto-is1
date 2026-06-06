@@ -26,6 +26,8 @@ public class MateriaController {
         post("/materia/new", MateriaController::handleCreate);
         get("/materia/list",     MateriaController::showList,     engine);
         post("/materia/delete",  MateriaController::handleDelete);
+        get("/materia/:id/edit",  MateriaController::showEditForm, engine);
+        post("/materia/:id/edit", MateriaController::handleUpdate);
     }
 
     // -------------------------------------------------------------------------
@@ -44,6 +46,25 @@ public class MateriaController {
         Map<String, Object> model = new HashMap<>();
         model.put("materias", materiaService.getAllMaterias());
         return new ModelAndView(model, "materia_list.mustache");
+    }
+    private static ModelAndView showEditForm(Request req, Response res) {
+        Map<String, Object> model = new HashMap<>();
+        try {
+            int id = Integer.parseInt(req.params("id"));
+            Materia materia = materiaService.findById(id);
+            model.put("id",          materia.getId());
+            model.put("nombre",      materia.getNombre());
+            model.put("descripcion", materia.getDescripcion());
+            model.put("codigo",      materia.getCodigo());
+        } catch (ServiceException e) {
+            res.redirect("/materia/list?error=" + e.getMessage());
+            return null;
+        }
+        String success = req.queryParams("success");
+        String error   = req.queryParams("error");
+        if (success != null) model.put("successMessage", success);
+        if (error   != null) model.put("errorMessage",   error);
+        return new ModelAndView(model, "materia_edit.mustache");
     }
 
     // -------------------------------------------------------------------------
@@ -83,6 +104,28 @@ public class MateriaController {
             res.redirect("/materia/list?error=" + e.getMessage());
         } catch (Exception e) {
             System.err.println("Error al eliminar materia: " + e.getMessage());
+            e.printStackTrace();
+            res.status(500);
+            res.redirect("/materia/list?error=Error interno. Intente de nuevo.");
+        }
+        return "";
+    }
+    private static Object handleUpdate(Request req, Response res) {
+        String idStr       = req.queryParams("id");
+        String nombre      = req.queryParams("nombre");
+        String descripcion = req.queryParams("descripcion");
+        String codigoStr   = req.queryParams("codigo");
+
+        try {
+            MateriaValidator.validate(nombre, descripcion, codigoStr);
+            materiaService.update(Integer.parseInt(idStr.trim()), nombre, descripcion,
+                    Integer.parseInt(codigoStr.trim()));
+            res.redirect("/materia/list?success=Materia actualizada exitosamente.");
+        } catch (ValidationException | ServiceException e) {
+            res.status(400);
+            res.redirect("/materia/list?error=" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error al actualizar materia: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
             res.redirect("/materia/list?error=Error interno. Intente de nuevo.");
