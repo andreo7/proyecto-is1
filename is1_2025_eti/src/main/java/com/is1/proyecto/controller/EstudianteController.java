@@ -38,6 +38,8 @@ public class EstudianteController {
         get("/students",              EstudianteController::showList,     engine);
         get("/student/new",           EstudianteController::showForm,     engine);
         post("/student/new",          EstudianteController::handleCreate);
+        get("/student/:id/edit",           EstudianteController::showEditForm, engine);
+        post("/student/:id/edit",     EstudianteController::handleUpdate);
     }
 
     // -------------------------------------------------------------------------
@@ -59,6 +61,36 @@ public class EstudianteController {
         return new ModelAndView(model, "estudiante_form.mustache");
     }
 
+
+    /**
+     * Muestra el formulario de edición precompletado con los datos actuales.
+     * Agrega flags booleanos al modelo para que Mustache pueda marcar la
+     * opción correcta del select de estado_carrera.
+     */
+    private static ModelAndView showEditForm(Request req, Response res) {
+        Map<String, Object> model = new HashMap<>();
+        try {
+            int id = Integer.parseInt(req.params("id"));
+            Map<String, Object> data = estudianteService.findById(id);
+            model.putAll(data);
+
+            // Flags para preseleccionar la opción correcta del select
+            String estadoCarrera = (String) data.get("estadoCarrera");
+            model.put("ingresanteSelected", "Ingresante".equals(estadoCarrera));
+            model.put("avanzadoSelected",   "Avanzado".equals(estadoCarrera));
+
+        } catch (ServiceException e) {
+            res.redirect("/students?error=" + e.getMessage());
+            return null;
+        } catch (NumberFormatException e) {
+            res.redirect("/students?error=ID de estudiante invalido.");
+            return null;
+        }
+
+        // Se llama después de poblar el modelo para no pisar datos del estudiante
+        addQueryMessages(req, model);
+        return new ModelAndView(model, "estudiante_edit.mustache");
+    }
 
     // -------------------------------------------------------------------------
     // Handlers POST
@@ -91,6 +123,36 @@ public class EstudianteController {
         }
         return "";
     }
+
+    /** Procesa el formulario de edición. */
+    private static Object handleUpdate(Request req, Response res) {
+        String idStr         = req.params("id");
+        String nombre        = req.queryParams("nombre");
+        String apellido      = req.queryParams("apellido");
+        String dni           = req.queryParams("dni");
+        String contacto      = req.queryParams("contacto");
+        String direccion     = req.queryParams("direccion");
+        String nroAlumno     = req.queryParams("nroAlumno");
+        String estadoCarrera = req.queryParams("estadoCarrera");
+
+        try {
+            EstudianteValidator.validate(nombre, apellido, dni, contacto,
+                    direccion, nroAlumno, estadoCarrera);
+            int id = Integer.parseInt(idStr.trim());
+            estudianteService.update(id, nombre, apellido, dni, contacto,
+                    direccion, nroAlumno, estadoCarrera);
+            res.redirect("/students?success=Estudiante actualizado exitosamente.");
+
+        } catch (ValidationException | ServiceException e) {
+            // Redirige al formulario de edición para que el usuario corrija sin perder contexto
+            res.redirect("/student/" + idStr + "/edit?error=" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error inesperado en handleUpdate (Estudiante): " + e.getMessage());
+            res.redirect("/students?error=Error interno al actualizar el estudiante. Intente de nuevo.");
+        }
+        return "";
+    }
+
 
     // -------------------------------------------------------------------------
     // Utilidades privadas
