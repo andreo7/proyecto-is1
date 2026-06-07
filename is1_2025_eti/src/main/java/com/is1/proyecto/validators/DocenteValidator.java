@@ -3,10 +3,10 @@ package com.is1.proyecto.validators;
 import com.is1.proyecto.exceptions.ValidationException;
 
 /**
- * Valida los datos de entrada del formulario de alta/edición de docente.
+ * Valida los datos de entrada del formulario de alta/edición/baja de docente.
  * Solo verifica formato y presencia: NO accede a la base de datos.
  * Las validaciones de unicidad (DNI, contacto, matrícula ya registrados)
- * son responsabilidad de DocenteService.
+ * y de reglas de negocio (materias asociadas) son responsabilidad de DocenteService.
  */
 public class DocenteValidator {
 
@@ -50,23 +50,44 @@ public class DocenteValidator {
         try {
             int dni = Integer.parseInt(dniStr.trim());
             if (dni <= 0) {
-                throw new ValidationException("El DNI debe ser un numero positivo.");
+                throw new ValidationException("El DNI debe ser un número positivo.");
             }
         } catch (NumberFormatException e) {
-            throw new ValidationException("El DNI debe ser un número valido (sin letras ni simbolos).");
+            throw new ValidationException("El DNI debe ser un número válido (sin letras ni símbolos).");
         }
 
         try {
             int matricula = Integer.parseInt(matriculaStr.trim());
             if (matricula <= 0) {
-                throw new ValidationException("La matricula debe ser un número positivo.");
+                throw new ValidationException("La matrícula debe ser un número positivo.");
             }
         } catch (NumberFormatException e) {
-            throw new ValidationException("La matricula debe ser un número valido.");
+            throw new ValidationException("La matrícula debe ser un número válido.");
         }
 
         if (!contacto.trim().matches(EMAIL_REGEX)) {
-            throw new ValidationException("El contacto debe ser un email valido (ej: nombre@dominio.com).");
+            throw new ValidationException("El contacto debe ser un email válido (ej: nombre@dominio.com).");
+        }
+    }
+
+    /**
+     * Valida que el ID de docente recibido por path param sea un entero positivo válido.
+     * Se usa en la operación de baja antes de parsear el ID.
+     *
+     * @param idStr el valor del path param ":id" tal como llega desde Spark
+     * @throws ValidationException si el ID es nulo, vacío o no es un entero positivo
+     */
+    public static void validateId(String idStr) {
+        if (isBlank(idStr)) {
+            throw new ValidationException("El ID del docente es requerido.");
+        }
+        try {
+            int id = Integer.parseInt(idStr.trim());
+            if (id <= 0) {
+                throw new ValidationException("El ID del docente debe ser un número positivo.");
+            }
+        } catch (NumberFormatException e) {
+            throw new ValidationException("El ID del docente no es válido.");
         }
     }
 

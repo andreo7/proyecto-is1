@@ -4,10 +4,7 @@ import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.models.Docente;
 import com.is1.proyecto.models.Persona;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Contiene la lógica de negocio relacionada a los docentes.
