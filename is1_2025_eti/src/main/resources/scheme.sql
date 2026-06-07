@@ -10,10 +10,10 @@ DROP TABLE IF EXISTS persona;
 CREATE TABLE persona (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     dni TEXT NOT NULL UNIQUE,
-    nombre TEXT NOT NULL,     
+    nombre TEXT NOT NULL,
     apellido TEXT NOT NULL,
     direccion TEXT NOT NULL,
-    contacto TEXT NOT NULL UNIQUE      
+    contacto TEXT NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS docente;
@@ -40,4 +40,13 @@ CREATE TABLE materia (
     nombre TEXT NOT NULL,
     descripcion TEXT NOT NULL,
     codigo INTEGER NOT NULL UNIQUE
+);
+
+DROP TABLE IF EXISTS docente_materia;
+CREATE TABLE docente_materia (
+    id_docente INTEGER NOT NULL,
+    id_materia INTEGER NOT NULL,
+    PRIMARY KEY (id_docente, id_materia),
+    CONSTRAINT fk_dm_docente FOREIGN KEY (id_docente) REFERENCES docente(id),
+    CONSTRAINT fk_dm_materia FOREIGN KEY (id_materia) REFERENCES materia(id)
 );
