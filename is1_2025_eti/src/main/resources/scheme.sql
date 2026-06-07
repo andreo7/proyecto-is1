@@ -10,10 +10,10 @@ DROP TABLE IF EXISTS persona;
 CREATE TABLE persona (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     dni TEXT NOT NULL UNIQUE,
-    nombre TEXT NOT NULL,     
+    nombre TEXT NOT NULL,
     apellido TEXT NOT NULL,
     direccion TEXT NOT NULL,
-    contacto TEXT NOT NULL UNIQUE      
+    contacto TEXT NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS docente;
