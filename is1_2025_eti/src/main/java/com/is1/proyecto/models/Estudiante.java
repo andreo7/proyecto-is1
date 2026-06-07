@@ -1,9 +1,11 @@
 package com.is1.proyecto.models;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
 
 @Table("estudiante")
+@BelongsTo(parent = Persona.class, foreignKeyName = "id_person")
 public class Estudiante extends Model {
 
     public Persona getPerson() {
@@ -30,7 +32,7 @@ public class Estudiante extends Model {
         set("estado_carrera", estadoCarrera);
     }
 
-    // Métodos puente
+    // Métodos puente — delegan en la Persona asociada
     public String getNombre() {
         return getPerson().getNombre();
     }
