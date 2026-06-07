@@ -45,7 +45,7 @@ public class DocenteController {
      * POST /teacher/:id/delete → procesar baja
      */
     public static void registerRoutes() {
-        get("/teachers",            DocenteController::showList,   engine);
+        get("/teacher",            DocenteController::showList,   engine);
         get("/teacher/new",         DocenteController::showForm,   engine);
         post("/teacher/new",        DocenteController::handleCreate);
         post("/teacher/:id/delete", DocenteController::handleDelete);
@@ -142,13 +142,13 @@ public class DocenteController {
 
             docenteService.deleteDocente(docenteId);
 
-            res.redirect("/teachers?success=Docente eliminado exitosamente.");
+            res.redirect("/teacher?success=Docente eliminado exitosamente.");
 
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/teachers?error=" + e.getMessage());
+            res.redirect("/teacher?error=" + e.getMessage());
         } catch (Exception e) {
             System.err.println("Error inesperado en handleDelete (Docente): " + e.getMessage());
-            res.redirect("/teachers?error=Error interno al eliminar el docente. Intente de nuevo.");
+            res.redirect("/teacher?error=Error interno al eliminar el docente. Intente de nuevo.");
         }
         return "";
     }

@@ -41,12 +41,3 @@ CREATE TABLE materia (
     descripcion TEXT NOT NULL,
     codigo INTEGER NOT NULL UNIQUE
 );
-
-DROP TABLE IF EXISTS docente_materia;
-CREATE TABLE docente_materia (
-    id_docente INTEGER NOT NULL,
-    id_materia INTEGER NOT NULL,
-    PRIMARY KEY (id_docente, id_materia),
-    CONSTRAINT fk_dm_docente FOREIGN KEY (id_docente) REFERENCES docente(id),
-    CONSTRAINT fk_dm_materia FOREIGN KEY (id_materia) REFERENCES materia(id)
-);

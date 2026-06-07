@@ -2,10 +2,12 @@ package com.is1.proyecto.service;
 
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.models.Docente;
-import com.is1.proyecto.models.DocenteMateria;
 import com.is1.proyecto.models.Persona;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contiene la lógica de negocio relacionada a los docentes.
@@ -24,13 +26,13 @@ public class DocenteService {
                                  String contacto, String direccion, String matriculaStr) {
 
         if (Persona.findFirst("dni = ?", dniStr.trim()) != null) {
-            throw new ServiceException("El DNI " + dniStr.trim() + " ya está registrado.");
+            throw new ServiceException("El DNI " + dniStr.trim() + " ya esta registrado.");
         }
         if (Persona.findFirst("contacto = ?", contacto.trim()) != null) {
-            throw new ServiceException("El contacto " + contacto.trim() + " ya está registrado.");
+            throw new ServiceException("El contacto " + contacto.trim() + " ya esta registrado.");
         }
         if (Docente.findFirst("matricula = ?", matriculaStr.trim()) != null) {
-            throw new ServiceException("La matrícula " + matriculaStr.trim() + " ya está registrada.");
+            throw new ServiceException("La matrícula " + matriculaStr.trim() + " ya esta registrada.");
         }
 
         Persona persona = new Persona();
@@ -54,8 +56,24 @@ public class DocenteService {
      *
      * @return lista de Docente (puede estar vacía, nunca null)
      */
-    public List<Docente> getAllDocentes() {
-        return Docente.findAll().include(Persona.class).load();
+    public List<Map<String, Object>> getAllDocentes() {
+        List<Docente> docentes = Docente.findAll().include(Persona.class).load();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Docente d : docentes) {
+            Persona p = d.getPerson();
+            Map<String, Object> row = new HashMap<>();
+            row.put("id",        d.getId());
+            row.put("nombre",    p.getNombre());
+            row.put("apellido",  p.getApellido());
+            row.put("dni",       p.getDni());
+            row.put("matricula", d.getMatricula());
+            row.put("contacto",  p.getContacto());
+            row.put("direccion", p.getDireccion());
+            result.add(row);
+        }
+
+        return result;
     }
 
     /**
@@ -73,18 +91,8 @@ public class DocenteService {
             throw new ServiceException("El docente con ID " + docenteId + " no existe.");
         }
 
-        long materiasAsociadas = DocenteMateria.count("id_docente = ?", docenteId);
-        if (materiasAsociadas > 0) {
-            throw new ServiceException(
-                    "No se puede eliminar el docente porque tiene " + materiasAsociadas +
-                            " materia(s) asociada(s). Desasócielas primero."
-            );
-        }
-
         Persona persona = docente.getPerson();
-
         docente.delete();
-
         if (persona != null) {
             persona.delete();
         }
