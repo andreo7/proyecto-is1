@@ -40,6 +40,7 @@ public class EstudianteController {
         post("/student/new",          EstudianteController::handleCreate);
         get("/student/:id/edit",           EstudianteController::showEditForm, engine);
         post("/student/:id/edit",     EstudianteController::handleUpdate);
+        post("/student/:id/delete",   EstudianteController::handleDelete);
     }
 
     // -------------------------------------------------------------------------
@@ -153,6 +154,22 @@ public class EstudianteController {
         return "";
     }
 
+    /** Elimina un estudiante y su persona asociada. */
+    private static Object handleDelete(Request req, Response res) {
+        String idStr = req.params("id");
+        try {
+            int id = Integer.parseInt(idStr.trim());
+            estudianteService.delete(id);
+            res.redirect("/students?success=Estudiante eliminado exitosamente.");
+
+        } catch (ServiceException e) {
+            res.redirect("/students?error=" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error inesperado en handleDelete (Estudiante): " + e.getMessage());
+            res.redirect("/students?error=Error interno al eliminar el estudiante. Intente de nuevo.");
+        }
+        return "";
+    }
 
     // -------------------------------------------------------------------------
     // Utilidades privadas
