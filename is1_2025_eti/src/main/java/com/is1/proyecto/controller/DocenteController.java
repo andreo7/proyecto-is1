@@ -59,33 +59,13 @@ public class DocenteController {
     private static ModelAndView showList(Request req, Response res) {
         Map<String, Object> model = new HashMap<>();
 
-        // Mensajes de feedback que vienen por query param tras un redirect
         String success = req.queryParams("success");
         String error   = req.queryParams("error");
         if (success != null && !success.isEmpty()) model.put("successMessage", success);
         if (error   != null && !error.isEmpty())   model.put("errorMessage",   error);
 
-        List<Docente> docentes = docenteService.getAllDocentes();
-
-        // Mustache no tiene lógica condicional nativa basada en tamaño de lista,
-        // por eso usamos un flag booleano "hasDocentes" para mostrar/ocultar la tabla.
-        model.put("hasDocentes", !docentes.isEmpty());
-
-        // Convertimos cada Docente a un Map para que Mustache pueda iterar
-        // sin necesidad de reflexión ni getters específicos del ORM.
-        List<Map<String, Object>> docentesData = new ArrayList<>();
-        for (Docente d : docentes) {
-            Map<String, Object> row = new HashMap<>();
-            row.put("id",        d.getId());
-            row.put("nombre",    d.getNombre());
-            row.put("apellido",  d.getApellido());
-            row.put("dni",       d.getPerson().getDni());
-            row.put("contacto",  d.getContacto());
-            row.put("direccion", d.getDireccion());
-            row.put("matricula", d.getMatricula());
-            docentesData.add(row);
-        }
-        model.put("docentes", docentesData);
+        List<Map<String, Object>> docentes = docenteService.getAllDocentes();
+        model.put("docentes", docentes);
 
         return new ModelAndView(model, "docentes_list.mustache");
     }
