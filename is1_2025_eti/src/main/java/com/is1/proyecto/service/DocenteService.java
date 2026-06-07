@@ -2,6 +2,7 @@ package com.is1.proyecto.service;
 
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.models.Docente;
+import com.is1.proyecto.models.DocenteMateria;
 import com.is1.proyecto.models.Persona;
 
 import java.util.List;
@@ -12,35 +13,6 @@ import java.util.List;
  * Lanza ServiceException ante violaciones de reglas de dominio.
  */
 public class DocenteService {
-
-    /**
-     * Retorna todos los docentes registrados como lista de mapas
-     * lista para ser consumida directamente por Mustache.
-     *
-     * Usa .include(Persona.class) para cargar todas las personas
-     * en una sola consulta SQL adicional (evita el problema N+1).
-     * Requiere que Docente tenga declarado @BelongsTo con foreignKeyName = "id_person".
-     *
-     * Cada mapa contiene: id, nombre, apellido, dni, matricula, contacto.
-     */
-    public List<Map<String, Object>> getAllDocentes() {
-        List<Docente> docentes = Docente.findAll().include(Persona.class).load();
-        List<Map<String, Object>> result = new ArrayList<>();
-
-        for (Docente d : docentes) {
-            Persona p = d.getPerson();
-            Map<String, Object> row = new HashMap<>();
-            row.put("id",        d.getId());
-            row.put("nombre",    p.getNombre());
-            row.put("apellido",  p.getApellido());
-            row.put("dni",       p.getDni());
-            row.put("matricula", d.getMatricula());
-            row.put("contacto",  p.getContacto());
-            result.add(row);
-        }
-
-        return result;
-    }
 
     /**
      * Crea y persiste un nuevo docente junto con su Persona asociada.
@@ -54,11 +26,9 @@ public class DocenteService {
         if (Persona.findFirst("dni = ?", dniStr.trim()) != null) {
             throw new ServiceException("El DNI " + dniStr.trim() + " ya está registrado.");
         }
-
         if (Persona.findFirst("contacto = ?", contacto.trim()) != null) {
             throw new ServiceException("El contacto " + contacto.trim() + " ya está registrado.");
         }
-
         if (Docente.findFirst("matricula = ?", matriculaStr.trim()) != null) {
             throw new ServiceException("La matrícula " + matriculaStr.trim() + " ya está registrada.");
         }
@@ -77,5 +47,46 @@ public class DocenteService {
         docente.saveIt();
 
         return docente;
+    }
+
+    /**
+     * Retorna la lista completa de docentes registrados.
+     *
+     * @return lista de Docente (puede estar vacía, nunca null)
+     */
+    public List<Docente> getAllDocentes() {
+        return Docente.findAll().include(Persona.class).load();
+    }
+
+    /**
+     * Elimina un docente y su Persona asociada dado el ID del docente.
+     *
+     * Regla de negocio: no se puede eliminar un docente que tenga
+     * materias asociadas en la tabla intermedia docente_materia.
+     *
+     * @param docenteId ID del docente a eliminar
+     * @throws ServiceException si el docente no existe o tiene materias asociadas
+     */
+    public void deleteDocente(int docenteId) {
+        Docente docente = Docente.findById(docenteId);
+        if (docente == null) {
+            throw new ServiceException("El docente con ID " + docenteId + " no existe.");
+        }
+
+        long materiasAsociadas = DocenteMateria.count("id_docente = ?", docenteId);
+        if (materiasAsociadas > 0) {
+            throw new ServiceException(
+                    "No se puede eliminar el docente porque tiene " + materiasAsociadas +
+                            " materia(s) asociada(s). Desasócielas primero."
+            );
+        }
+
+        Persona persona = docente.getPerson();
+
+        docente.delete();
+
+        if (persona != null) {
+            persona.delete();
+        }
     }
 }
