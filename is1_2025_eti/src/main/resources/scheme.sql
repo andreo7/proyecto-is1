@@ -2,9 +2,9 @@
 DROP TABLE IF EXISTS estudiante;
 DROP TABLE IF EXISTS docente;
 DROP TABLE IF EXISTS materia;
+DROP TABLE IF EXISTS carrera;
 DROP TABLE IF EXISTS persona;
 DROP TABLE IF EXISTS users;
-
 
 -- Crea la tabla 'users' con los campos originales, adaptados para SQLite
 CREATE TABLE users (
@@ -43,4 +43,10 @@ CREATE TABLE materia (
     nombre TEXT NOT NULL,
     descripcion TEXT NOT NULL,
     codigo INTEGER NOT NULL UNIQUE
+);
+
+CREATE TABLE carrera (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL UNIQUE,
+    descripcion TEXT NOT NULL
 );
