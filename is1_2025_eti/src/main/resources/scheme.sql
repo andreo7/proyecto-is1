@@ -1,12 +1,18 @@
--- Crea la tabla 'users' con los campos originales, adaptados para SQLite
+
+DROP TABLE IF EXISTS estudiante;
+DROP TABLE IF EXISTS docente;
+DROP TABLE IF EXISTS materia;
+DROP TABLE IF EXISTS carrera;
+DROP TABLE IF EXISTS persona;
 DROP TABLE IF EXISTS users;
+
+-- Crea la tabla 'users' con los campos originales, adaptados para SQLite
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT, -- Clave primaria autoincremental para SQLite
     name TEXT NOT NULL UNIQUE,          -- Nombre de usuario (TEXT es el tipo de cadena recomendado para SQLite), con restricción UNIQUE
     password TEXT NOT NULL           -- Contraseña hasheada (TEXT es el tipo de cadena recomendado para SQLite)
 );
 
-DROP TABLE IF EXISTS persona;
 CREATE TABLE persona (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     dni TEXT NOT NULL UNIQUE,
@@ -16,7 +22,6 @@ CREATE TABLE persona (
     contacto TEXT NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS docente;
 CREATE TABLE docente(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_person INTEGER NOT NULL UNIQUE,
@@ -24,7 +29,6 @@ CREATE TABLE docente(
     CONSTRAINT fk_docente1 FOREIGN KEY (id_person) REFERENCES persona(id)
 );
 
-DROP TABLE IF EXISTS estudiante;
 CREATE TABLE estudiante(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_person INTEGER NOT NULL UNIQUE,
@@ -34,10 +38,15 @@ CREATE TABLE estudiante(
     CHECK (estado_carrera IN ('Ingresante', 'Avanzado'))
 );
 
-DROP TABLE IF EXISTS materia;
 CREATE TABLE materia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     descripcion TEXT NOT NULL,
     codigo INTEGER NOT NULL UNIQUE
+);
+
+CREATE TABLE carrera (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL UNIQUE,
+    descripcion TEXT NOT NULL
 );
