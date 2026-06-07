@@ -5,6 +5,7 @@ import com.is1.proyecto.controller.DashboardController;
 import com.is1.proyecto.controller.DocenteController;
 import com.is1.proyecto.controller.MateriaController;
 import com.is1.proyecto.controller.UserController;
+import com.is1.proyecto.controller.EstudianteController;
 import org.javalite.activejdbc.Base;
 
 import static spark.Spark.*;
@@ -63,5 +64,6 @@ public class App {
         DashboardController.registerRoutes();
         UserController.registerRoutes();
         MateriaController.registerRoutes();
+        EstudianteController.registerRoutes();
     }
 }
