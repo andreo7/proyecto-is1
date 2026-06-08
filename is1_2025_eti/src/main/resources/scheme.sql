@@ -50,6 +50,7 @@ CREATE TABLE materia (
 
 CREATE TABLE carrera (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    codigo INTEGER NOT NULL UNIQUE,
     nombre TEXT NOT NULL UNIQUE,
     descripcion TEXT NOT NULL
 );
