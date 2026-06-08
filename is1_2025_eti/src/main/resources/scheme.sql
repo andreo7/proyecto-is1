@@ -61,3 +61,14 @@ CREATE TABLE plan_estudio (
     id_carrera INTEGER NOT NULL,
     CONSTRAINT fk_plan_estudio_carrera FOREIGN KEY (id_carrera) REFERENCES carrera(id)
 );
+
+CREATE TABLE IF NOT EXISTS docente_materia (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_docente INTEGER NOT NULL,
+    id_materia INTEGER NOT NULL,
+    cargo      TEXT    NOT NULL,
+    CONSTRAINT fk_dm_docente FOREIGN KEY (id_docente) REFERENCES docente(id),
+    CONSTRAINT fk_dm_materia FOREIGN KEY (id_materia) REFERENCES materia(id),
+    CONSTRAINT uq_docente_materia UNIQUE (id_docente, id_materia),
+    CHECK (cargo IN ('Titular', 'Adjunto', 'JTP', 'Ayudante'))
+);
