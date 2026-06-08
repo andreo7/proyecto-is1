@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materias del Docente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Encabezado -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">
+                    Materias de {{nombreDocente}} {{apellidoDocente}}
+                </h1>
+                <p class="text-sm text-gray-500 mt-1">Matrícula: {{matriculaDocente}}</p>
+            </div>
+            <a href="/teacher"
+               class="text-sm text-orange-600 hover:underline">← Volver al listado</a>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    {{#successMessage}}
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+        <span>{{successMessage}}</span>
+    </div>
+    {{/successMessage}}
+    {{#errorMessage}}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <span>{{errorMessage}}</span>
+    </div>
+    {{/errorMessage}}
+
+    <!-- Formulario de alta de asociación -->
+    {{#hayDisponibles}}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Asociar nueva materia</h2>
+        <form action="/teacher/{{idDocente}}/materias" method="post"
+              class="flex flex-wrap gap-3 items-end">
+
+            <div class="flex-1 min-w-48">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Materia</label>
+                <select name="idMateria" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm
+                               focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white">
+                    <option value="" disabled selected>Seleccionar materia...</option>
+                    {{#disponibles}}
+                    <option value="{{id}}">{{nombre}} (Cód. {{codigo}})</option>
+                    {{/disponibles}}
+                </select>
+            </div>
+
+            <div class="min-w-36">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Cargo</label>
+                <select name="cargo" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm
+                               focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white">
+                    <option value="" disabled selected>Cargo...</option>
+                    <option value="Titular">Titular</option>
+                    <option value="Adjunto">Adjunto</option>
+                    <option value="JTP">JTP</option>
+                    <option value="Ayudante">Ayudante</option>
+                </select>
+            </div>
+
+            <button type="submit"
+                    class="bg-orange-600 text-white px-5 py-2 rounded-md text-sm font-medium
+                           hover:bg-orange-700 transition duration-150 whitespace-nowrap">
+                + Asociar
+            </button>
+        </form>
+    </div>
+    {{/hayDisponibles}}
+    {{^hayDisponibles}}
+    <div class="bg-white rounded-lg shadow p-6">
+        <p class="text-sm text-gray-500 text-center">
+            No hay materias disponibles para asociar.
+            <a href="/materia/new" class="text-orange-600 hover:underline">Crear una materia nueva</a>.
+        </p>
+    </div>
+    {{/hayDisponibles}}
+
+    <!-- Tabla de materias asociadas -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-700">Materias asociadas</h2>
+        </div>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Materia</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Código</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cargo</th>
+                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {{#materias}}
+                <tr class="hover:bg-gray-50 transition duration-150">
+                    <td class="px-6 py-4 text-sm text-gray-800">
+                        <div class="font-medium">{{nombre}}</div>
+                        <div class="text-xs text-gray-400">{{descripcion}}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{codigo}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <!-- Badge de cargo con color según rol -->
+                        {{#esTitular}}
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Titular</span>
+                        {{/esTitular}}
+                        {{#esAdjunto}}
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Adjunto</span>
+                        {{/esAdjunto}}
+                        {{#esJTP}}
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-700">JTP</span>
+                        {{/esJTP}}
+                        {{#esAyudante}}
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">Ayudante</span>
+                        {{/esAyudante}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <div class="flex items-center justify-center gap-2">
+
+                            <!-- Editar cargo: mini-form inline con select -->
+                            <form action="/teacher/{{idDocente}}/materias/{{idAsociacion}}/edit"
+                                  method="post" class="flex items-center gap-1">
+                                <select name="cargo"
+                                        class="px-2 py-1 text-xs border border-gray-300 rounded
+                                               focus:outline-none focus:ring-1 focus:ring-orange-400 bg-white">
+                                    <option value="Titular"  {{#esTitular}}selected{{/esTitular}}>Titular</option>
+                                    <option value="Adjunto"  {{#esAdjunto}}selected{{/esAdjunto}}>Adjunto</option>
+                                    <option value="JTP"      {{#esJTP}}selected{{/esJTP}}>JTP</option>
+                                    <option value="Ayudante" {{#esAyudante}}selected{{/esAyudante}}>Ayudante</option>
+                                </select>
+                                <button type="submit"
+                                        class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1
+                                               rounded text-xs font-medium transition duration-150">
+                                    Guardar
+                                </button>
+                            </form>
+
+                            <!-- Eliminar asociación -->
+                            <form action="/teacher/{{idDocente}}/materias/{{idAsociacion}}/delete"
+                                  method="post" class="inline"
+                                  onsubmit="return confirm('¿Desasociar {{nombre}} de este docente?')">
+                                <button type="submit"
+                                        class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1
+                                               rounded text-xs font-medium transition duration-150">
+                                    Quitar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{/materias}}
+
+                {{^materias}}
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-gray-400 text-sm">
+                        Este docente no tiene materias asociadas aún.
+                    </td>
+                </tr>
+                {{/materias}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pie -->
+    <div class="text-center pb-4">
+        <a href="/dashboard" class="text-gray-500 hover:underline text-sm">← Volver al panel</a>
+    </div>
+
+</div>
+
+<!-- Inyectar idDocente para los forms de edición inline -->
+<script>
+    // Los forms inline ya tienen el idDocente en la action, no se necesita JS adicional.
+</script>
+</body>
+</html>
