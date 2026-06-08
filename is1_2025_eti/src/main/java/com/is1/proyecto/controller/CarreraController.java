@@ -3,6 +3,7 @@ package com.is1.proyecto.controller;
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
 import com.is1.proyecto.service.CarreraService;
+import com.is1.proyecto.util.WebUtils;
 import com.is1.proyecto.validators.CarreraValidator;
 import spark.ModelAndView;
 import spark.Request;
@@ -100,16 +101,18 @@ public class CarreraController {
             CarreraValidator.validate(nombre, descripcion, codigoStr);
             carreraService.createCarrera(Integer.parseInt(codigoStr.trim()), nombre, descripcion);
             res.status(201);
-            res.redirect("/carrera/new?success=Alta de carrera realizada exitosamente para "
-                    + capitalize(nombre) + "!");
+            res.redirect("/carrera/new?success=" +
+                    WebUtils.encode("Alta de carrera realizada exitosamente para " + capitalize(nombre) + "!"));
         } catch (ValidationException | ServiceException e) {
             res.status(400);
-            res.redirect("/carrera/new?error=" + e.getMessage());
+            res.redirect("/carrera/new?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al dar de alta carrera: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/carrera/new?error=Error interno. Intente de nuevo.");
+            res.redirect("/carrera/new?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }
@@ -124,15 +127,18 @@ public class CarreraController {
             CarreraValidator.validate(nombre, descripcion, codigoStr);
             carreraService.update(Integer.parseInt(idStr.trim()), Integer.parseInt(codigoStr.trim()),
                     nombre, descripcion);
-            res.redirect("/carrera/list?success=Carrera actualizada exitosamente.");
+            res.redirect("/carrera/list?success="
+                    + WebUtils.encode("Carrera actualizada exitosamente."));
         } catch (ValidationException | ServiceException e) {
             res.status(400);
-            res.redirect("/carrera/" + idStr + "/edit?error=" + e.getMessage());
+            res.redirect("/carrera/" + idStr + "/edit?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al actualizar carrera: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/carrera/list?error=Error interno. Intente de nuevo.");
+            res.redirect("/carrera/list?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }
@@ -142,15 +148,18 @@ public class CarreraController {
 
         try {
             carreraService.delete(Integer.parseInt(idStr.trim()));
-            res.redirect("/carrera/list?success=Carrera eliminada exitosamente.");
+            res.redirect("/carrera/list?success="
+                    + WebUtils.encode("Carrera eliminada exitosamente."));
         } catch (ServiceException e) {
             res.status(400);
-            res.redirect("/carrera/list?error=" + e.getMessage());
+            res.redirect("/carrera/list?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al eliminar carrera: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/carrera/list?error=Error interno. Intente de nuevo.");
+            res.redirect("/carrera/list?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }
