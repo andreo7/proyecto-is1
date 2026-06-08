@@ -6,6 +6,7 @@ import com.is1.proyecto.controller.DashboardController;
 import com.is1.proyecto.controller.DocenteController;
 import com.is1.proyecto.controller.MateriaController;
 import com.is1.proyecto.controller.UserController;
+import com.is1.proyecto.controller.DocenteMateriaController;
 import com.is1.proyecto.controller.EstudianteController;
 import org.javalite.activejdbc.Base;
 
@@ -67,5 +68,6 @@ public class App {
         MateriaController.registerRoutes();
         EstudianteController.registerRoutes();
         CarreraController.registerRoutes();
+        DocenteController.registerRoutes();
     }
 }
