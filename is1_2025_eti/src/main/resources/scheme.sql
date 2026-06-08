@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS estudiante;
 DROP TABLE IF EXISTS docente;
 DROP TABLE IF EXISTS materia;
+DROP TABLE IF EXISTS plan_estudio;
 DROP TABLE IF EXISTS carrera;
 DROP TABLE IF EXISTS persona;
 DROP TABLE IF EXISTS users;
@@ -42,11 +43,20 @@ CREATE TABLE materia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     descripcion TEXT NOT NULL,
-    codigo INTEGER NOT NULL UNIQUE
+    codigo INTEGER NOT NULL UNIQUE,
+    id_plan_estudio INTEGER,
+    CONSTRAINT fk_materia_plan FOREIGN KEY (id_plan_estudio) REFERENCES plan_estudio(id)
 );
 
 CREATE TABLE carrera (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL UNIQUE,
     descripcion TEXT NOT NULL
+);
+
+CREATE TABLE plan_estudio (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    version INTEGER NOT NULL,
+    id_carrera INTEGER NOT NULL,
+    CONSTRAINT fk_plan_estudio_carrera FOREIGN KEY (id_carrera) REFERENCES carrera(id)
 );
