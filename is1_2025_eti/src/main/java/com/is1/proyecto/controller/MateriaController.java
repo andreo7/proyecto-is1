@@ -4,6 +4,7 @@ import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
 import com.is1.proyecto.models.Materia;
 import com.is1.proyecto.service.MateriaService;
+import com.is1.proyecto.util.WebUtils;
 import com.is1.proyecto.validators.MateriaValidator;
 import spark.ModelAndView;
 import spark.Request;
@@ -82,16 +83,19 @@ public class MateriaController {
             MateriaValidator.validate(nombre, descripcion, codigoStr);
             materiaService.createMateria(Integer.parseInt(codigoStr.trim()), nombre, descripcion);
             res.status(201);
-            res.redirect("/materia/new?success=Alta de materia realizada exitosamente para "
-                    + nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase() + "!");
+            res.redirect("/materia/new?success="
+                    + WebUtils.encode("Alta de materia realizada exitosamente para "
+                    + nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase() + "!"));
         } catch (ValidationException | ServiceException e) {
             res.status(400);
-            res.redirect("/materia/new?error=" + e.getMessage());
+            res.redirect("/materia/new?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al dar de alta materia: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/materia/new?error=Error interno. Intente de nuevo.");
+            res.redirect("/materia/new?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }
@@ -100,15 +104,18 @@ public class MateriaController {
 
         try {
             materiaService.delete(Integer.parseInt(idStr.trim()));
-            res.redirect("/materia/list?success=Materia eliminada exitosamente.");
+            res.redirect("/materia/list?success="
+                    + WebUtils.encode("Materia eliminada exitosamente."));
         } catch (ServiceException e) {
             res.status(400);
-            res.redirect("/materia/list?error=" + e.getMessage());
+            res.redirect("/materia/list?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al eliminar materia: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/materia/list?error=Error interno. Intente de nuevo.");
+            res.redirect("/materia/list?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }
@@ -122,15 +129,18 @@ public class MateriaController {
             MateriaValidator.validate(nombre, descripcion, codigoStr);
             materiaService.update(Integer.parseInt(idStr.trim()), nombre, descripcion,
                     Integer.parseInt(codigoStr.trim()));
-            res.redirect("/materia/list?success=Materia actualizada exitosamente.");
+            res.redirect("/materia/list?success="
+                    + WebUtils.encode("Materia actualizada exitosamente."));
         } catch (ValidationException | ServiceException e) {
             res.status(400);
-            res.redirect("/materia/list?error=" + e.getMessage());
+            res.redirect("/materia/list?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error al actualizar materia: " + e.getMessage());
             e.printStackTrace();
             res.status(500);
-            res.redirect("/materia/list?error=Error interno. Intente de nuevo.");
+            res.redirect("/materia/list?error="
+                    + WebUtils.encode("Error interno. Intente de nuevo."));
         }
         return "";
     }

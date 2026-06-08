@@ -4,6 +4,7 @@ import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
 import com.is1.proyecto.models.User;
 import com.is1.proyecto.service.UserService;
+import com.is1.proyecto.util.WebUtils;
 import com.is1.proyecto.validators.UserValidator;
 import spark.ModelAndView;
 import spark.Request;
@@ -77,12 +78,15 @@ public class UserController {
         try {
             UserValidator.validateRegistration(name, password);
             userService.createUser(name, password);
-            res.redirect("/user/create?message=Alta realizada exitosamente para " + name + "!");
+            res.redirect("/user/create?message="
+                    + WebUtils.encode("Alta realizada exitosamente para " + name + "!"));
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/user/create?error=" + e.getMessage());
+            res.redirect("/user/create?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleRegister: " + e.getMessage());
-            res.redirect("/user/create?error=Error interno al crear la cuenta. Intente de nuevo.");
+            res.redirect("/user/create?error="
+                    + WebUtils.encode("Error interno al crear la cuenta. Intente de nuevo."));
         }
         return "";
     }

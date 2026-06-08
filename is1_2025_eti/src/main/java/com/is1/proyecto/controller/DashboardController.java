@@ -1,5 +1,6 @@
 package com.is1.proyecto.controller;
 
+import com.is1.proyecto.util.WebUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -37,7 +38,8 @@ public class DashboardController {
         Boolean loggedIn        = req.session().attribute("loggedIn");
 
         if (currentUsername == null || loggedIn == null || !loggedIn) {
-            res.redirect("/login?error=Debés iniciar sesión para acceder a esta página.");
+            res.redirect("/login?error="
+                    + WebUtils.encode("Debés iniciar sesión para acceder a esta página."));
             return null;
         }
 
