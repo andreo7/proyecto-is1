@@ -1,6 +1,7 @@
 package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
+import com.is1.proyecto.controller.CarreraController;
 import com.is1.proyecto.controller.DashboardController;
 import com.is1.proyecto.controller.DocenteController;
 import com.is1.proyecto.controller.MateriaController;
@@ -65,5 +66,6 @@ public class App {
         UserController.registerRoutes();
         MateriaController.registerRoutes();
         EstudianteController.registerRoutes();
+        CarreraController.registerRoutes();
     }
 }
