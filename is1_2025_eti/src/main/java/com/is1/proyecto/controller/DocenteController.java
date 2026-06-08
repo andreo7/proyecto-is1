@@ -3,6 +3,7 @@ package com.is1.proyecto.controller;
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
 import com.is1.proyecto.service.DocenteService;
+import com.is1.proyecto.util.WebUtils;
 import com.is1.proyecto.validators.DocenteValidator;
 import spark.ModelAndView;
 import spark.Request;
@@ -101,12 +102,15 @@ public class DocenteController {
         try {
             DocenteValidator.validate(nombre, apellido, dni, contacto, direccion, matricula);
             docenteService.createDocente(nombre, apellido, dni, contacto, direccion, matricula);
-            res.redirect("/teacher/new?success=Alta realizada exitosamente para " + capitalize(nombre) + "!");
+            res.redirect("/teacher/new?success="
+                    + WebUtils.encode("Alta realizada exitosamente para " + capitalize(nombre) + "!"));
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/teacher/new?error=" + e.getMessage());
+            res.redirect("/teacher/new?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleCreate (Docente): " + e.getMessage());
-            res.redirect("/teacher/new?error=Error interno al dar de alta al docente. Intente de nuevo.");
+            res.redirect("/teacher/new?error="
+                    + WebUtils.encode("Error interno al dar de alta al docente. Intente de nuevo."));
         }
         return "";
     }
@@ -124,12 +128,15 @@ public class DocenteController {
             DocenteValidator.validate(nombre, apellido, dni, contacto, direccion, matricula);
             int id = Integer.parseInt(idStr.trim());
             docenteService.update(id, nombre, apellido, dni, contacto, direccion, matricula);
-            res.redirect("/teacher?success=Docente actualizado exitosamente.");
+            res.redirect("/teacher?success="
+                    + WebUtils.encode("Docente actualizado exitosamente."));
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/teacher/" + idStr + "/edit?error=" + e.getMessage());
+            res.redirect("/teacher/" + idStr + "/edit?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleUpdate (Docente): " + e.getMessage());
-            res.redirect("/teacher?error=Error interno al actualizar el docente. Intente de nuevo.");
+            res.redirect("/teacher?error="
+                    + WebUtils.encode("Error interno al actualizar el docente. Intente de nuevo."));
         }
         return "";
     }
@@ -141,12 +148,15 @@ public class DocenteController {
             DocenteValidator.validateId(idParam);
             int docenteId = Integer.parseInt(idParam.trim());
             docenteService.deleteDocente(docenteId);
-            res.redirect("/teacher?success=Docente eliminado exitosamente.");
+            res.redirect("/teacher?success="
+                    + WebUtils.encode("Docente eliminado exitosamente."));
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/teacher?error=" + e.getMessage());
+            res.redirect("/teacher?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleDelete (Docente): " + e.getMessage());
-            res.redirect("/teacher?error=Error interno al eliminar el docente. Intente de nuevo.");
+            res.redirect("/teacher?error="
+                    + WebUtils.encode("Error interno al eliminar el docente. Intente de nuevo."));
         }
         return "";
     }
