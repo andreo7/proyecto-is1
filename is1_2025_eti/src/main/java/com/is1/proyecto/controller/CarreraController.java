@@ -48,6 +48,9 @@ public class CarreraController {
         get("/carrera/list",      CarreraController::showList,     engine);
         get("/carrera/new",       CarreraController::showForm,     engine);
         post("/carrera/new",      CarreraController::handleCreate);
+        get("/carrera/:id/edit",  CarreraController::showEditForm, engine);
+        post("/carrera/:id/edit", CarreraController::handleUpdate);
+        post("/carrera/delete",   CarreraController::handleDelete);
     }
 
     // -------------------------------------------------------------------------
