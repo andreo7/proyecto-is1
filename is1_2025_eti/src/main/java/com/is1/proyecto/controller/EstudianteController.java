@@ -3,6 +3,7 @@ package com.is1.proyecto.controller;
 import com.is1.proyecto.exceptions.ServiceException;
 import com.is1.proyecto.exceptions.ValidationException;
 import com.is1.proyecto.service.EstudianteService;
+import com.is1.proyecto.util.WebUtils;
 import com.is1.proyecto.validators.EstudianteValidator;
 import spark.ModelAndView;
 import spark.Request;
@@ -114,13 +115,16 @@ public class EstudianteController {
                     direccion, nroAlumno, estadoCarrera);
 
             String nombreCapitalizado = capitalize(nombre);
-            res.redirect("/students?success=Alta realizada exitosamente para " + nombreCapitalizado + "!");
+            res.redirect("/students?success="
+                    + WebUtils.encode("Alta realizada exitosamente para " + nombreCapitalizado + "!"));
 
         } catch (ValidationException | ServiceException e) {
-            res.redirect("/student/new?error=" + e.getMessage());
+            res.redirect("/student/new?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleCreate (Estudiante): " + e.getMessage());
-            res.redirect("/student/new?error=Error interno al dar de alta al estudiante. Intente de nuevo.");
+            res.redirect("/student/new?error="
+                    + WebUtils.encode("Error interno al dar de alta al estudiante. Intente de nuevo."));
         }
         return "";
     }
@@ -142,14 +146,17 @@ public class EstudianteController {
             int id = Integer.parseInt(idStr.trim());
             estudianteService.update(id, nombre, apellido, dni, contacto,
                     direccion, nroAlumno, estadoCarrera);
-            res.redirect("/students?success=Estudiante actualizado exitosamente.");
+            res.redirect("/students?success="
+                    + WebUtils.encode("Estudiante actualizado exitosamente."));
 
         } catch (ValidationException | ServiceException e) {
             // Redirige al formulario de edición para que el usuario corrija sin perder contexto
-            res.redirect("/student/" + idStr + "/edit?error=" + e.getMessage());
+            res.redirect("/student/" + idStr + "/edit?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleUpdate (Estudiante): " + e.getMessage());
-            res.redirect("/students?error=Error interno al actualizar el estudiante. Intente de nuevo.");
+            res.redirect("/students?error="
+                    + WebUtils.encode("Error interno al actualizar el estudiante. Intente de nuevo."));
         }
         return "";
     }
@@ -160,13 +167,16 @@ public class EstudianteController {
         try {
             int id = Integer.parseInt(idStr.trim());
             estudianteService.delete(id);
-            res.redirect("/students?success=Estudiante eliminado exitosamente.");
+            res.redirect("/students?success="
+                    + WebUtils.encode("Estudiante eliminado exitosamente."));
 
         } catch (ServiceException e) {
-            res.redirect("/students?error=" + e.getMessage());
+            res.redirect("/students?error="
+                    + WebUtils.encode(e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error inesperado en handleDelete (Estudiante): " + e.getMessage());
-            res.redirect("/students?error=Error interno al eliminar el estudiante. Intente de nuevo.");
+            res.redirect("/students?error="
+                    + WebUtils.encode("Error interno al eliminar el estudiante. Intente de nuevo."));
         }
         return "";
     }
